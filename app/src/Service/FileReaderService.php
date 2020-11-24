@@ -12,7 +12,7 @@ class FileReaderService
     public function __construct()
     {
          $this->fileName = $this->getChosenFileName($this->getFilesArray());
-         echo $this->fileName . "\n";
+         print_r($this->getFileDataArray($this->fileName));
     }
 
     //Get all files names from files  dir.
@@ -46,5 +46,16 @@ class FileReaderService
         return $filesArray[$chosenFileKey];
     }
 
+    private function getFileDataArray($fileName)
+    {
+        $shoppingCartArray = [];
+        $data = explode("\n",  file_get_contents(self::FILES_DIR.$fileName));
 
+        foreach ($data as $row) {
+            $row = explode(';', $row);
+            $shoppingCartArray[] = $row;
+        }
+
+        return $shoppingCartArray;
+    }
 }

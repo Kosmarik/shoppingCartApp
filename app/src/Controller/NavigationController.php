@@ -9,6 +9,8 @@ use App\Service\FileReaderService;
 class NavigationController
 {
     //Available operations.
+    //If you would like to add more operations, you
+    //should edit CommunicateWithUserService::displayOperationsOptionsToUser
     const READ_FILE_SOURCE = 1;
     const EXIT_SCRIPT = 2;
 
