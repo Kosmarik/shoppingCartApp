@@ -22,4 +22,13 @@ class CommunicateWithUserService
         echo "1. Select a file" . "\n";
         echo "2. EXIT SCRIPT" . "\n";
     }
+
+    public static function displayFileListForSelect($filesArray)
+    {
+        echo "Choose a file from the list: \n";
+
+        foreach ($filesArray as $key => $file) {
+            echo "$key. $file \n";
+        }
+    }
 }

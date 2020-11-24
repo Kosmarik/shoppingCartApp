@@ -2,6 +2,6 @@
 
 require_once 'vendor/autoload.php';
 
-new \App\Controller\NavigationController();
+define("PATH", __DIR__);
 
-?>
+new \App\Controller\NavigationController();
