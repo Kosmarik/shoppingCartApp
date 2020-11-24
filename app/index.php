@@ -1,5 +1,7 @@
 <?php
 
-    echo "Shopping Cart app! \n";
+require_once 'vendor/autoload.php';
+
+echo "Shopping Cart app! \n";
 
 ?>
