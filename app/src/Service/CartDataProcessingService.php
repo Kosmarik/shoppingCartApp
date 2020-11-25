@@ -5,39 +5,30 @@ namespace App\Service;
 
 class CartDataProcessingService
 {
+    // Cart data from file comes in array. This is array keys.
     const PRODUCT_IDENTIFIER = 0;
     const PRODUCT_NAME = 1;
     const PRODUCT_QUANTITY = 2;
     const PRODUCT_PRICE = 3;
     const PRODUCT_CURRENCY = 4;
 
+    // Cart data from file.
     private $cartData;
+    // Selected by user currency.
     private $currency;
-    private $availableCurrencies = ["EUR", "USD", "GBP"];
     private $currencyConverterService;
+    private $communicateWithUserService;
 
     public function __construct(FileReaderService $cartData)
     {
         $this->currencyConverterService = new CurrencyConverterService();
+        $this->communicateWithUserService = new  CommunicateWithUserService();
         $this->cartData = $cartData->getFileDataArray();
-        $this->currency = $this->getCurrencies($this->availableCurrencies);
-    }
-
-    private function getCurrencies($availableCurrencies)
-    {
-        CommunicateWithUserService::displayCurrencyForSelect($availableCurrencies);
-        $chosenCurrency = CommunicateWithUserService::displayInputBoxToUser();
-
-        if (!array_key_exists($chosenCurrency, $availableCurrencies)) {
-            exit("Currency with key '$chosenCurrency' is not found. \n");
-        }
-
-        return $availableCurrencies[$chosenCurrency];
+        $this->currency = $this->communicateWithUserService->getCurrency();
     }
 
     public function processCart()
     {
-
         $totalCartProductsPrice = [];
         $totalCartProductsCount = [];
 
@@ -61,7 +52,8 @@ class CartDataProcessingService
         }
     }
 
-    private function getTotal($productsPrice) {
+    private function getTotal($productsPrice)
+    {
         $total = 0;
 
         foreach ($productsPrice as $productPrice) {

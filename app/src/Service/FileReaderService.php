@@ -7,14 +7,16 @@ class FileReaderService
 {
     const FILES_DIR = PATH . '/files/';
 
+    private $communicateWithUserService;
     private $fileName;
 
     public function __construct()
     {
-         $this->fileName = $this->getChosenFileName($this->getFilesArray());
+        $this->communicateWithUserService = new CommunicateWithUserService();
+        $this->fileName = $this->communicateWithUserService->getFileName($this->getFilesArray());
     }
 
-    //Get all files names from files  dir.
+    //Get all files names from files dir.
     private function getFilesArray()
     {
         $result = [];
@@ -31,18 +33,6 @@ class FileReaderService
         }
 
         return $result;
-    }
-
-    private function getChosenFileName($filesArray)
-    {
-        CommunicateWithUserService::displayFileListForSelect($filesArray);
-        $chosenFileKey = CommunicateWithUserService::displayInputBoxToUser();
-
-        if (!array_key_exists($chosenFileKey, $filesArray)) {
-            exit("File with key '$chosenFileKey' is not found. \n");
-        }
-
-        return $filesArray[$chosenFileKey];
     }
 
     public function getFileDataArray()
