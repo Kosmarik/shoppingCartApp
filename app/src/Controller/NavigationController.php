@@ -13,14 +13,17 @@ class NavigationController
     const READ_FILE_SOURCE = 1;
     const EXIT_SCRIPT = 2;
 
+    private $communicateWithUserService;
+
     public function __construct()
     {
+        $this->communicateWithUserService = new CommunicateWithUserService();
         $this->loadChosenOperation();
     }
 
     private function loadChosenOperation()
     {
-        $operation = $this->getOperation();
+        $operation = $this->communicateWithUserService->displayOperationsOptionsToUser();
 
         if (!in_array($operation, [self::READ_FILE_SOURCE, self::EXIT_SCRIPT])) {
             echo "You must choose from the list of operations!";
@@ -33,13 +36,5 @@ class NavigationController
                 new ShoppingCartController();
                 break;
         }
-    }
-
-    private function getOperation()
-    {
-        CommunicateWithUserService::displayOperationsOptionsToUser();
-        $chosenOperation = CommunicateWithUserService::displayInputBoxToUser();
-
-        return $chosenOperation;
     }
 }

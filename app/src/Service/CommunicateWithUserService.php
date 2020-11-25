@@ -7,16 +7,18 @@ class CommunicateWithUserService
 {
     private $availableCurrencies = ["EUR", "USD", "GBP"];
 
-    public static function displayInputBoxToUser()
+    private function displayInputBoxToUser()
     {
         return trim(fgets(STDIN, 1024));
     }
 
-    public static function displayOperationsOptionsToUser()
+    public function displayOperationsOptionsToUser()
     {
         echo "Select operation: " . "\n";
         echo "1. Select a file" . "\n";
         echo "2. EXIT SCRIPT" . "\n";
+
+        return $this->displayInputBoxToUser();
     }
 
     private function displayFileListForSelect($filesArray)
@@ -40,7 +42,7 @@ class CommunicateWithUserService
     public function getCurrency()
     {
         $this->displayCurrencyForSelect($this->availableCurrencies);
-        $chosenCurrency = CommunicateWithUserService::displayInputBoxToUser();
+        $chosenCurrency = $this->displayInputBoxToUser();
 
         if (!array_key_exists($chosenCurrency, $this->availableCurrencies)) {
             exit("Currency with key '$chosenCurrency' is not found. \n");
@@ -52,7 +54,7 @@ class CommunicateWithUserService
     public function getFileName($filesArray)
     {
         $this->displayFileListForSelect($filesArray);
-        $chosenFileKey = CommunicateWithUserService::displayInputBoxToUser();
+        $chosenFileKey = $this->displayInputBoxToUser();
 
         if (!array_key_exists($chosenFileKey, $filesArray)) {
             exit("File with key '$chosenFileKey' is not found. \n");
