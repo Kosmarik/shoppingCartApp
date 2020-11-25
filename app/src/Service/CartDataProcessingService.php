@@ -14,14 +14,13 @@ class CartDataProcessingService
     private $cartData;
     private $currency;
     private $availableCurrencies = ["EUR", "USD", "GBP"];
-    private $currenciesValue = ["EUR" => 1, "USD" => 1.14, "GBP" => 0.88];
+    private $currencyConverterService;
 
     public function __construct(FileReaderService $cartData)
     {
+        $this->currencyConverterService = new CurrencyConverterService();
         $this->cartData = $cartData->getFileDataArray();
-        print_r($this->cartData);
         $this->currency = $this->getCurrencies($this->availableCurrencies);
-        echo $this->currenciesValue[$this->currency] . "\n";
     }
 
     private function getCurrencies($availableCurrencies)
@@ -36,4 +35,39 @@ class CartDataProcessingService
         return $availableCurrencies[$chosenCurrency];
     }
 
+    public function processCart()
+    {
+
+        $totalCartProductsPrice = [];
+        $totalCartProductsCount = [];
+
+        foreach ($this->cartData as $product) {
+
+            // If we get product in bad format e.g we use ',' instead of ';' if Cart file.
+            if (count($product) == 5) {
+                if ($product[self::PRODUCT_QUANTITY] > 0) {
+                    $this->currencyConverterService->setConvert($product[self::PRODUCT_PRICE], $product[self::PRODUCT_CURRENCY]);
+                    $totalCartProductsPrice[$product[self::PRODUCT_IDENTIFIER]][] =
+                        $this->currencyConverterService->getConvert($this->currency) * $product[self::PRODUCT_QUANTITY];
+                    $totalCartProductsCount[$product[self::PRODUCT_IDENTIFIER]][] = $product[self::PRODUCT_QUANTITY];
+                } elseif ($product[self::PRODUCT_QUANTITY] < 0) {
+                    unset($totalCartProductsPrice[$product[self::PRODUCT_IDENTIFIER]]);
+                    unset($totalCartProductsCount[$product[self::PRODUCT_IDENTIFIER]]);
+                }
+            }
+
+            echo "Total cart products (" . $this->getTotal($totalCartProductsCount) . ") price: ";
+            echo $this->getTotal($totalCartProductsPrice) . " $this->currency \n";
+        }
+    }
+
+    private function getTotal($productsPrice) {
+        $total = 0;
+
+        foreach ($productsPrice as $productPrice) {
+            $total += array_sum($productPrice);
+        }
+
+        return round($total, 2);
+    }
 }

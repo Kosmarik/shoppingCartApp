@@ -28,7 +28,7 @@ class CommunicateWithUserService
 
     public static function displayCurrencyForSelect($currencies)
     {
-        echo "Chose a currency from the list: \n";
+        echo "Chose a currency for output from the list: \n";
 
         foreach ($currencies as $key => $currency) {
             echo "$key. $currency \n";

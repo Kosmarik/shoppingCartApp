@@ -15,5 +15,6 @@ class ShoppingCartController
     {
         $this->cartDataArray = new FileReaderService();
         $this->cartDataProcessingService = new CartDataProcessingService($this->cartDataArray);
+        $this->cartDataProcessingService->processCart();
     }
 }
