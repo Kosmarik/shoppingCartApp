@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ivasko
- * Date: 2020-11-24
- * Time: 13:13
- */
 
 namespace App\Service;
 
@@ -29,6 +23,15 @@ class CommunicateWithUserService
 
         foreach ($filesArray as $key => $file) {
             echo "$key. $file \n";
+        }
+    }
+
+    public static function displayCurrencyForSelect($currencies)
+    {
+        echo "Chose a currency from the list: \n";
+
+        foreach ($currencies as $key => $currency) {
+            echo "$key. $currency \n";
         }
     }
 }

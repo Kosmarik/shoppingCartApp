@@ -12,7 +12,6 @@ class FileReaderService
     public function __construct()
     {
          $this->fileName = $this->getChosenFileName($this->getFilesArray());
-         print_r($this->getFileDataArray($this->fileName));
     }
 
     //Get all files names from files  dir.
@@ -40,14 +39,15 @@ class FileReaderService
         $chosenFileKey = CommunicateWithUserService::displayInputBoxToUser();
 
         if (!array_key_exists($chosenFileKey, $filesArray)) {
-            exit("File with key '$chosenFileKey' not found. \n");
+            exit("File with key '$chosenFileKey' is not found. \n");
         }
 
         return $filesArray[$chosenFileKey];
     }
 
-    private function getFileDataArray($fileName)
+    public function getFileDataArray()
     {
+        $fileName = $this->fileName;
         $shoppingCartArray = [];
         $data = explode("\n",  file_get_contents(self::FILES_DIR.$fileName));
 

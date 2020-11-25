@@ -4,7 +4,6 @@ namespace App\Controller;
 
 
 use App\Service\CommunicateWithUserService;
-use App\Service\FileReaderService;
 
 class NavigationController
 {
@@ -31,7 +30,7 @@ class NavigationController
 
         switch ($operation) {
             case self::READ_FILE_SOURCE:
-                new FileReaderService();
+                new ShoppingCartController();
                 break;
         }
     }
